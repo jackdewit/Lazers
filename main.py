@@ -3,7 +3,6 @@ import spidev
 import numpy
 from ADC import read_adc
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 spi_ch = 0
 
@@ -52,21 +51,27 @@ def intervalScan(interval, n, channel):
         
     return array
 
-
-# Report the channel 0 and channel 1 voltages to the terminal
 try:
     
     array = intervalScan(10, 50, 0)
-    print(array)
     X_axis = numpy.linspace(1,50)
+
+    #Determine coefficients of quadratic line of best fit
+    bestFit = numpy.polyfit(X_axis, array, 2)
+    
+    #Create line of best fit
+    y = numpy.zeros(50)
+    
+    for x in range(50):
+        y[x] = bestFit[0]*x*x+bestFit[1]*x+bestFit[2]
+    
+    #Plot ADC data and line of best fit
     plt.figure()
-    plt.plot(X_axis, array)
+    plt.plot(X_axis, array, label='ADC Data')
+    plt.plot(X_axis, y, label='Best Fit')
+    plt.legend()
     plt.show()
-
-    bestFit = np.polyfit(X_axis, array, 2)
-    x=1
-    y = bestFit[0]*x*x+bestFit[1]*x+bestFit[3]
-
+    
 finally:
 
     spi.close()
