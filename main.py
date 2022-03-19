@@ -1,10 +1,9 @@
 import time
 import spidev
 import numpy
-from ADC import read_adc
 import matplotlib.pyplot as plt
 
-spi_ch = 0
+spi_ch = 1
 
 # Enable SPI
 spi = spidev.SpiDev(0, spi_ch)
