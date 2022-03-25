@@ -16,6 +16,7 @@ def read_adc(adc_ch, spi, vref = 3.1):
 
     # Make sure ADC channel is 0 or 1
     if adc_ch != 0: print("Error. Please select ADC Channel 0.")
+    
     # Construct SPI message
     # Byte 1:
     # Five leading zeroes
@@ -34,7 +35,7 @@ def read_adc(adc_ch, spi, vref = 3.1):
     # Construct single integer out of the reply (3 bytes)
     # First byte received is garbage data
     # Last four bits of second byte are MSBs
-    # Third byte contains last four bits of twelve bit response
+    # Third byte contains last eight bits of twelve bit response
     adc = 0
     adc = ((reply[1]&0b00001111) << 8) + reply[2]
 
